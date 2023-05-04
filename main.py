@@ -1,3 +1,4 @@
+import math
 import numpy as np
 import matplotlib.pyplot as plt
 import tkinter as tk
@@ -19,7 +20,7 @@ data = filtfilt(b, a, data)
 # размер участка
 window_size = 10000
 # Calculate the wavelet spectrum using Continuous Wavelet Transform (CWT)
-widths = np.arange(1, 11)
+widths = np.arange(1, 10)
 cwt_matrix = cwt(data, ricker, widths)
 # размеры участков
 sizes = [len(data) // (2 ** i) for i in range(len(widths))]
@@ -38,7 +39,6 @@ axs[0].plot(data)
 #axs[0].set_xlim([5000, 214000])
 # построить график вейвлет спектра
 im = axs[1].imshow(np.abs(cwt_matrix), extent=[0, len(data), widths[-1], widths[0]], aspect='auto', cmap='jet')
-axs[1].set_ylabel('Ширина вейвлета')
 axs[1].set_title('Вейвлет спектр')
 fig.colorbar(im, ax=axs[1], label='Амплитуда')
 # построить график зависимости логарифма суммы модулей вейвлет спектра от логарифма размера участков
@@ -47,7 +47,7 @@ axs[2].plot(np.log(sizes), slope * np.log(sizes) + intercept, color='red', label
 #axs[2].set_xlim([9.5, 12.274])
 axs[2].set_xlabel('Log(размера окна)')
 axs[2].set_ylabel('Log(вейвлет спектра)')
-axs[2].set_title('Коэффициент самоподобия = ' + str(round(fractal_dimension, 6)))
+axs[2].set_title('Коэффициент самоподобия = ' + str(round(math.tan(fractal_dimension), 6)))
 axs[2].legend()
 
 plt.show()
